@@ -104,6 +104,10 @@ importers:
       '@rn-devtools/shared':
         specifier: workspace:*
         version: link:../../shared
+    devDependencies:
+      '@types/node':
+        specifier: ^26.1.1
+        version: 26.1.1
 
   packages/collectors/hermes:
     dependencies:
@@ -132,6 +136,10 @@ importers:
       '@rn-devtools/shared':
         specifier: workspace:*
         version: link:../../shared
+    devDependencies:
+      '@types/node':
+        specifier: ^26.1.1
+        version: 26.1.1
 
   packages/collectors/metro:
     dependencies:
