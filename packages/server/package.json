@@ -1,0 +1,36 @@
+{
+  "name": "@rn-devtools/server",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -b --watch",
+    "typecheck": "tsc -b",
+    "lint": "eslint src",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@rn-devtools/shared": "workspace:*",
+    "@rn-devtools/core": "workspace:*",
+    "@rn-devtools/reports": "workspace:*",
+    "@rn-devtools/collector-metro": "workspace:*",
+    "@rn-devtools/collector-hermes": "workspace:*",
+    "@rn-devtools/collector-react-devtools": "workspace:*",
+    "@rn-devtools/collector-android": "workspace:*",
+    "@rn-devtools/collector-ios": "workspace:*",
+    "@rn-devtools/analyzer-memory": "workspace:*",
+    "@rn-devtools/analyzer-render": "workspace:*",
+    "@rn-devtools/analyzer-fps": "workspace:*",
+    "@rn-devtools/analyzer-network": "workspace:*",
+    "@rn-devtools/analyzer-bundle": "workspace:*"
+  }
+}

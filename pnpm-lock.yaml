@@ -36,6 +36,170 @@ importers:
         specifier: ^8.19.0
         version: 8.65.0(eslint@9.39.5(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3)
 
+  packages/analyzers/bundle:
+    dependencies:
+      '@rn-devtools/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@rn-devtools/shared':
+        specifier: workspace:*
+        version: link:../../shared
+
+  packages/analyzers/fps:
+    dependencies:
+      '@rn-devtools/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@rn-devtools/shared':
+        specifier: workspace:*
+        version: link:../../shared
+
+  packages/analyzers/memory:
+    dependencies:
+      '@rn-devtools/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@rn-devtools/shared':
+        specifier: workspace:*
+        version: link:../../shared
+
+  packages/analyzers/network:
+    dependencies:
+      '@rn-devtools/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@rn-devtools/shared':
+        specifier: workspace:*
+        version: link:../../shared
+
+  packages/analyzers/render:
+    dependencies:
+      '@rn-devtools/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@rn-devtools/shared':
+        specifier: workspace:*
+        version: link:../../shared
+
+  packages/cli:
+    dependencies:
+      '@rn-devtools/core':
+        specifier: workspace:*
+        version: link:../core
+      '@rn-devtools/reports':
+        specifier: workspace:*
+        version: link:../reports
+      '@rn-devtools/server':
+        specifier: workspace:*
+        version: link:../server
+      '@rn-devtools/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/collectors/android:
+    dependencies:
+      '@rn-devtools/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@rn-devtools/shared':
+        specifier: workspace:*
+        version: link:../../shared
+
+  packages/collectors/hermes:
+    dependencies:
+      '@rn-devtools/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@rn-devtools/shared':
+        specifier: workspace:*
+        version: link:../../shared
+
+  packages/collectors/ios:
+    dependencies:
+      '@rn-devtools/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@rn-devtools/shared':
+        specifier: workspace:*
+        version: link:../../shared
+
+  packages/collectors/metro:
+    dependencies:
+      '@rn-devtools/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@rn-devtools/shared':
+        specifier: workspace:*
+        version: link:../../shared
+
+  packages/collectors/react-devtools:
+    dependencies:
+      '@rn-devtools/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@rn-devtools/shared':
+        specifier: workspace:*
+        version: link:../../shared
+
+  packages/core:
+    dependencies:
+      '@rn-devtools/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/reports:
+    dependencies:
+      '@rn-devtools/core':
+        specifier: workspace:*
+        version: link:../core
+      '@rn-devtools/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/server:
+    dependencies:
+      '@rn-devtools/analyzer-bundle':
+        specifier: workspace:*
+        version: link:../analyzers/bundle
+      '@rn-devtools/analyzer-fps':
+        specifier: workspace:*
+        version: link:../analyzers/fps
+      '@rn-devtools/analyzer-memory':
+        specifier: workspace:*
+        version: link:../analyzers/memory
+      '@rn-devtools/analyzer-network':
+        specifier: workspace:*
+        version: link:../analyzers/network
+      '@rn-devtools/analyzer-render':
+        specifier: workspace:*
+        version: link:../analyzers/render
+      '@rn-devtools/collector-android':
+        specifier: workspace:*
+        version: link:../collectors/android
+      '@rn-devtools/collector-hermes':
+        specifier: workspace:*
+        version: link:../collectors/hermes
+      '@rn-devtools/collector-ios':
+        specifier: workspace:*
+        version: link:../collectors/ios
+      '@rn-devtools/collector-metro':
+        specifier: workspace:*
+        version: link:../collectors/metro
+      '@rn-devtools/collector-react-devtools':
+        specifier: workspace:*
+        version: link:../collectors/react-devtools
+      '@rn-devtools/core':
+        specifier: workspace:*
+        version: link:../core
+      '@rn-devtools/reports':
+        specifier: workspace:*
+        version: link:../reports
+      '@rn-devtools/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/shared: {}
+
 packages:
 
   '@eslint-community/eslint-utils@4.10.1':

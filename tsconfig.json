@@ -1,4 +1,50 @@
 {
   "files": [],
-  "references": []
+  "references": [
+    {
+      "path": "packages/shared"
+    },
+    {
+      "path": "packages/core"
+    },
+    {
+      "path": "packages/reports"
+    },
+    {
+      "path": "packages/collectors/metro"
+    },
+    {
+      "path": "packages/collectors/hermes"
+    },
+    {
+      "path": "packages/collectors/react-devtools"
+    },
+    {
+      "path": "packages/collectors/android"
+    },
+    {
+      "path": "packages/collectors/ios"
+    },
+    {
+      "path": "packages/analyzers/memory"
+    },
+    {
+      "path": "packages/analyzers/render"
+    },
+    {
+      "path": "packages/analyzers/fps"
+    },
+    {
+      "path": "packages/analyzers/network"
+    },
+    {
+      "path": "packages/analyzers/bundle"
+    },
+    {
+      "path": "packages/server"
+    },
+    {
+      "path": "packages/cli"
+    }
+  ]
 }

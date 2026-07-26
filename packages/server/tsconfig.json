@@ -1,0 +1,49 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../shared"
+    },
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../reports"
+    },
+    {
+      "path": "../collectors/metro"
+    },
+    {
+      "path": "../collectors/hermes"
+    },
+    {
+      "path": "../collectors/react-devtools"
+    },
+    {
+      "path": "../collectors/android"
+    },
+    {
+      "path": "../collectors/ios"
+    },
+    {
+      "path": "../analyzers/memory"
+    },
+    {
+      "path": "../analyzers/render"
+    },
+    {
+      "path": "../analyzers/fps"
+    },
+    {
+      "path": "../analyzers/network"
+    },
+    {
+      "path": "../analyzers/bundle"
+    }
+  ]
+}
