@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@rn-devtools/shared": "workspace:*",
-    "@rn-devtools/core": "workspace:*"
+    "@rn-devtools/core": "workspace:*",
+    "@rn-devtools/collector-react-devtools": "workspace:*"
   }
 }

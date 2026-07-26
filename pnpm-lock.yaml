@@ -47,6 +47,9 @@ importers:
 
   packages/analyzers/fps:
     dependencies:
+      '@rn-devtools/collector-android':
+        specifier: workspace:*
+        version: link:../../collectors/android
       '@rn-devtools/core':
         specifier: workspace:*
         version: link:../../core
@@ -62,6 +65,10 @@ importers:
       '@rn-devtools/shared':
         specifier: workspace:*
         version: link:../../shared
+    devDependencies:
+      '@types/node':
+        specifier: ^26.1.1
+        version: 26.1.1
 
   packages/analyzers/network:
     dependencies:
@@ -74,6 +81,9 @@ importers:
 
   packages/analyzers/render:
     dependencies:
+      '@rn-devtools/collector-react-devtools':
+        specifier: workspace:*
+        version: link:../../collectors/react-devtools
       '@rn-devtools/core':
         specifier: workspace:*
         version: link:../../core
