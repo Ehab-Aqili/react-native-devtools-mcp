@@ -19,7 +19,12 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
+    "@rn-devtools/core": "workspace:*",
     "@rn-devtools/shared": "workspace:*",
-    "@rn-devtools/core": "workspace:*"
+    "ws": "^8.21.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "@types/ws": "^8.18.1"
   }
 }
