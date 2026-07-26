@@ -11,7 +11,8 @@ Normally, checking why a React Native app is slow or leaking memory means runnin
 command-line tools yourself (Android's `adb`, Apple's Instruments, Chrome DevTools) and reading
 through dense technical output. This tool lets your AI assistant (Claude, or any assistant that
 supports MCP) do that directly — it can look at your app's live memory, see what's slow to render,
-check for dropped frames, and hand you a summary in plain language, or a shareable report.
+check for dropped frames, watch what network requests it's making (and which ones are failing or
+slow), and hand you a summary in plain language, or a shareable report.
 
 It only _looks_ at your app — it doesn't change your code. The one exception is explicitly
 reloading the app, which it will only do if asked (see [Things to know](#things-to-know) below).
@@ -67,6 +68,7 @@ With your app running, just ask your assistant things like:
 - _"Why is my app laggy when I scroll the list?"_
 - _"What's slow when my app starts up?"_
 - _"Is my app dropping frames?"_
+- _"Are any of my API calls failing or taking too long?"_
 - _"Give me a performance report I can share with the team."_
 
 The assistant will typically:

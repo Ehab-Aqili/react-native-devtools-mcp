@@ -11,7 +11,7 @@ export async function run(): Promise<void> {
     }
     shuttingDown = true;
     ctx.logger.info(`received ${signal}, shutting down`);
-    void Promise.all([ctx.registry.disposeAll(), server.close()])
+    void Promise.all([ctx.registry.disposeAll(), ctx.networkSessions.disposeAll(), server.close()])
       .catch((caught: unknown) => {
         ctx.logger.error("error during shutdown", { error: String(caught) });
       })

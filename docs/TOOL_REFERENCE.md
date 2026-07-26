@@ -122,6 +122,54 @@ Without `componentName`: returns `{ rendererId, nodeCount, truncated, trees: Fib
 With `componentName`: returns `{ rendererId, path, component: FiberNode }` or
 `{ rendererId, found: false, message }` if not found.
 
+## Network
+
+A session-based trio rather than one bounded call — see
+[ARCHITECTURE.md](ARCHITECTURE.md#tool-lifecycle-exception-network-sessions) for why: network
+issues need to span however long it takes a person to reproduce a bug, which a single tool call
+with a duration cap can't do. Typical flow: `start_network_capture` → ask the person to reproduce
+the issue → `get_network_requests` any number of times to check progress → `stop_network_capture`
+once it's happened, for the final results and analyzer findings.
+
+### `start_network_capture`
+
+Begins observing fetch/XHR requests on the given CDP target — real native events
+(`RCTNetworking` → `NetworkReporter`), not JS-side interception. Returns immediately (does not
+wait or block).
+
+| Param                  | Type                   |
+| ---------------------- | ---------------------- |
+| `webSocketDebuggerUrl` | `string`, **required** |
+
+Returns `{ sessionId }`.
+
+### `get_network_requests`
+
+Returns everything a session has observed so far, without ending it.
+
+| Param       | Type                              | Notes                                                                                    |
+| ----------- | --------------------------------- | ---------------------------------------------------------------------------------------- |
+| `sessionId` | `string`                          | **required** — from `start_network_capture`                                              |
+| `detail`    | `"summary" \| "normal" \| "full"` | `full` additionally fetches each completed request's response body (capped, best-effort) |
+
+Returns `{ requests: NetworkRequest[] }`, where each request is
+`{ url, method, statusCode?, startTime, endTime?, transferSize?, failed?, errorText?, responseBody? }`.
+A request still in flight has no `statusCode`/`endTime` yet.
+
+### `stop_network_capture`
+
+Ends a session and returns the final requests plus network-analyzer findings (failures, slow
+requests, large payloads, duplicates). The session's CDP connection is freed after this call —
+`sessionId` cannot be reused (sessions also auto-expire after 15 minutes of inactivity as a safety
+net against a forgotten `stop` call).
+
+| Param       | Type                              | Notes                          |
+| ----------- | --------------------------------- | ------------------------------ |
+| `sessionId` | `string`                          | **required**                   |
+| `detail`    | `"summary" \| "normal" \| "full"` | same as `get_network_requests` |
+
+Returns `{ requests: NetworkRequest[], findings: Finding[] }`.
+
 ## Android
 
 ### `capture_android_perf`

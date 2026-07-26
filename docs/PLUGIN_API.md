@@ -1,11 +1,11 @@
 # Plugin API — adding a new Collector or Analyzer
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for the full picture. This doc is a practical walkthrough
-of adding a new one of each, using a real gap in the current codebase as the worked example: there
-is no live collector feeding `@rn-devtools/analyzer-network` yet (it was built and fixture-tested
-against a generic `NetworkRequest` shape — see its README note in
-`packages/analyzers/network/src/types.ts`). Wiring a real network collector is exactly the kind of
-addition this API is meant for.
+of adding a new one of each, using the real `@rn-devtools/collector-network` package as the worked
+example — it was added after `@rn-devtools/analyzer-network` already existed (built and
+fixture-tested in Step 9 against a generic `NetworkRequest` shape, with no live data source yet),
+which is exactly the situation this guide is written for: wiring a real collector up to an
+analyzer that was deliberately built ahead of it.
 
 ## The two interfaces (`packages/core`)
 
@@ -42,88 +42,81 @@ Rules of thumb, established by every existing collector/analyzer in this repo:
   (`"summary" | "normal" | "full"`) and cap output accordingly. See `WALK_OPTIONS_BY_DETAIL` in
   `collector-react-devtools`'s `collector.ts` for the pattern.
 
-## Worked example: a network collector
+## Worked example: `collector-network` (real, in the repo)
 
 ### 1. Scaffold the package
 
-Copy the shape any existing collector package uses:
-
-```
-packages/collectors/network/
-├─ package.json    # name "@rn-devtools/collector-network", deps: @rn-devtools/core, @rn-devtools/shared
-├─ tsconfig.json    # extends ../../../tsconfig.base.json, references ../../core and ../../shared
-└─ src/
-   ├─ types.ts
-   ├─ collector.ts
-   └─ index.ts
-```
-
-Add it to the root `pnpm-workspace.yaml` glob (already covers `packages/collectors/*`, so no
-change needed there) and run `pnpm install` once the `package.json` exists.
+`packages/collectors/network/` — same shape as every other collector package: `package.json`
+(`@rn-devtools/collector-network`, deps `@rn-devtools/core`, `@rn-devtools/shared`, and
+`@rn-devtools/collector-hermes` for its CDP client), `tsconfig.json` (extends
+`../../../tsconfig.base.json`, references `../../core`, `../../shared`, `../hermes`), and
+`src/{types.ts,collector.ts,index.ts}`. `packages/collectors/*` was already covered by the root
+`pnpm-workspace.yaml` glob; the new package just needed adding to the root `tsconfig.json`'s
+`references` array, then `pnpm install` to link it.
 
 ### 2. Implement the collector
 
-A real network collector would speak CDP's `Network` domain over the same kind of connection
-`collector-hermes`'s `CdpClient` already establishes (`Network.enable`, listen for
-`requestWillBeSent`/`responseReceived`/`loadingFinished` events, correlate by `requestId`). Reuse
-`CdpClient` from `@rn-devtools/collector-hermes` rather than writing a new websocket client — see
-how `collector-react-devtools` does exactly this.
+The key discovery that made this buildable at all: RN's Network tab is backed by **real** CDP
+`Network.*` events, emitted natively (`RCTNetworking.mm` → `NetworkReporter` →
+`jsinspector_modern::NetworkHandler` — see [ARCHITECTURE.md](ARCHITECTURE.md)), not a JS-side
+interception hook the way one might assume. So the collector reuses `CdpClient` from
+`@rn-devtools/collector-hermes` (the same pattern `collector-react-devtools` uses) exactly the way
+any other CDP domain would be consumed:
 
-```ts
-// packages/collectors/network/src/collector.ts
-import type { Collector } from "@rn-devtools/core";
-import { CdpClient } from "@rn-devtools/collector-hermes";
-import type { NetworkRequest } from "@rn-devtools/analyzer-network";
+- `network-client.ts` — `NetworkClient.connect()` sends `Network.enable`, then subscribes to
+  `requestWillBeSent` / `responseReceived` / `loadingFinished` / `loadingFailed` and correlates
+  them by `requestId` into a capped history array. One real CDP wrinkle it has to handle: a
+  redirect re-fires `requestWillBeSent` for the _same_ `requestId` (with a `redirectResponse`
+  field) — that leg has to be finalized into history before the id is reused for the new one, or
+  the redirect's own status/timing gets silently dropped.
+- `collector.ts` — `NetworkCollector implements Collector<NetworkConnectOptions, NetworkRequestRecord[]>`.
+  `capture({ detail: "full" })` additionally calls `Network.getResponseBody(requestId)` per
+  completed request (capped length, best-effort) — everything else skips body fetching entirely.
 
-export class NetworkCollector implements Collector<
-  { webSocketDebuggerUrl: string },
-  NetworkRequest[]
-> {
-  readonly id = "network";
-  readonly platform = "any" as const;
-  private readonly cdp = new CdpClient();
-  private readonly requests: NetworkRequest[] = [];
-  private connected = false;
-
-  get isConnected() {
-    return this.connected;
-  }
-
-  async connect(options: { webSocketDebuggerUrl: string }) {
-    await this.cdp.connect(options.webSocketDebuggerUrl);
-    await this.cdp.send("Network.enable");
-    this.cdp.on("Network.requestWillBeSent", (params) => {
-      /* record start */
-    });
-    this.cdp.on("Network.loadingFinished", (params) => {
-      /* record end, push to this.requests */
-    });
-    this.connected = true;
-  }
-
-  async capture(): Promise<NetworkRequest[]> {
-    return [...this.requests]; // snapshot of what's been observed since connect()
-  }
-
-  async dispose() {
-    this.cdp.close();
-    this.connected = false;
-  }
-}
-```
-
-Note this reuses the _existing_ `NetworkRequest` type from `@rn-devtools/analyzer-network` instead
-of defining a new one — the analyzer was deliberately built against a stable, documented shape so
-a real collector could target it directly.
+`NetworkRequestRecord` (in `types.ts`) is a type independently defined here, not imported from
+`@rn-devtools/analyzer-network` — see [ARCHITECTURE.md](ARCHITECTURE.md#package-dependency-graph)
+for why keeping collectors and analyzers decoupled in both directions was the deliberate choice,
+relying on the two shapes being structurally compatible instead.
 
 ### 3. Wire it into the server
 
-In `packages/server/src/tools/`, add a tool following the `capture-android-perf.ts` pattern:
-connect the collector, `capture()`, hand the raw array to
-`ctx.registry.getAnalyzer<NetworkAnalyzer>("network")` (already registered in `analyzers.ts` since
-Step 10), return `ok({ requests, findings })`. Register it in `tools/index.ts`'s
-`registerDomainTools()`. Add `@rn-devtools/collector-network` to `packages/server/package.json`
-and a matching `tsconfig.json` reference.
+This is the one place `collector-network` didn't end up following the usual single-bounded-call
+tool shape. The first version did (`connect → wait durationMs → capture → analyze → dispose`, one
+tool call, following `capture-android-perf.ts`'s pattern) — but that doesn't fit how network
+issues actually get diagnosed: the tool needs to be watching at the exact moment someone
+reproduces a bug, which can take anywhere from seconds to several minutes, not a bounded window.
+So it was reworked into three tools sharing a `NetworkSessionManager`
+(`packages/server/src/network-sessions.ts`, threaded through `ServerContext`) that keeps a
+`NetworkCollector` alive _across_ calls: `start_network_capture` connects and returns a
+`sessionId` immediately, `get_network_requests` can be polled any number of times without ending
+anything, and `stop_network_capture` disposes the connection and hands the raw array to
+`ctx.registry.getAnalyzer<NetworkAnalyzer>("network")` (registered since Step 10, nothing to
+change there). See [ARCHITECTURE.md](ARCHITECTURE.md#tool-lifecycle-exception-network-sessions)
+for the full reasoning — this is the only tool in the server with cross-call state, and it's a
+pattern worth reusing for anything else with the same "spans an unpredictable amount of real
+time" shape. `@rn-devtools/collector-network` was added to both `packages/server` and
+`packages/cli`'s `package.json`/`tsconfig.json` for parity with every other collector.
+
+### 4. Verify it
+
+There's no automated test suite in this repo (see [PLAN.md](../PLAN.md) — Step 13 was explicitly
+skipped). The convention used throughout development instead: write a throwaway `.mjs` script
+importing the built `dist/index.js`, run it against a real connected device, assert on the real
+values you get back, then delete the script. `collector-network` was verified this way against a
+real iPhone — triggering real `fetch()` calls (success, a 404, three identical duplicate requests,
+a redirect) from a second Hermes connection while the network collector observed, confirming
+correct status codes, correlation, the duplicate-request and failed-request analyzer findings, and
+a real fetched response body at `detail: "full"`. (One thing that came up during that testing:
+`httpbin.org` was transiently unreachable from the test network entirely — confirmed independently
+via a direct `curl` from the host, unrelated to the collector — so the fixtures were switched to
+`google.com` endpoints, which is worth remembering if a test service seems to be silently dropping
+requests: check whether the service itself is reachable before suspecting the collector.)
+
+The session tool trio was verified the same way, separately from the collector itself: confirmed
+`start_network_capture` returns in well under a second (not blocking for a fixed window), that
+`get_network_requests` correctly shows progressively more requests across repeated calls without
+ending the session, that `stop_network_capture` returns real findings, and that using a `sessionId`
+again after `stop` fails cleanly with a clear error rather than crashing the server.
 
 ## Adding just an analyzer (no new collector)
 

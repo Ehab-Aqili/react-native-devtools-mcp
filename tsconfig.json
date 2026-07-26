@@ -26,6 +26,9 @@
       "path": "packages/collectors/ios"
     },
     {
+      "path": "packages/collectors/network"
+    },
+    {
       "path": "packages/analyzers/memory"
     },
     {

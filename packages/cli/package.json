@@ -31,9 +31,11 @@
     "@rn-devtools/collector-react-devtools": "workspace:*",
     "@rn-devtools/collector-android": "workspace:*",
     "@rn-devtools/collector-ios": "workspace:*",
+    "@rn-devtools/collector-network": "workspace:*",
     "@rn-devtools/analyzer-memory": "workspace:*",
     "@rn-devtools/analyzer-render": "workspace:*",
-    "@rn-devtools/analyzer-fps": "workspace:*"
+    "@rn-devtools/analyzer-fps": "workspace:*",
+    "@rn-devtools/analyzer-network": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^26.1.1"

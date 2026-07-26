@@ -29,6 +29,7 @@
     "@rn-devtools/collector-hermes": "workspace:*",
     "@rn-devtools/collector-ios": "workspace:*",
     "@rn-devtools/collector-metro": "workspace:*",
+    "@rn-devtools/collector-network": "workspace:*",
     "@rn-devtools/collector-react-devtools": "workspace:*",
     "@rn-devtools/core": "workspace:*",
     "@rn-devtools/reports": "workspace:*",

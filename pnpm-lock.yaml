@@ -99,6 +99,9 @@ importers:
       '@rn-devtools/analyzer-memory':
         specifier: workspace:*
         version: link:../analyzers/memory
+      '@rn-devtools/analyzer-network':
+        specifier: workspace:*
+        version: link:../analyzers/network
       '@rn-devtools/analyzer-render':
         specifier: workspace:*
         version: link:../analyzers/render
@@ -114,6 +117,9 @@ importers:
       '@rn-devtools/collector-metro':
         specifier: workspace:*
         version: link:../collectors/metro
+      '@rn-devtools/collector-network':
+        specifier: workspace:*
+        version: link:../collectors/network
       '@rn-devtools/collector-react-devtools':
         specifier: workspace:*
         version: link:../collectors/react-devtools
@@ -192,6 +198,22 @@ importers:
         specifier: ^26.1.1
         version: 26.1.1
 
+  packages/collectors/network:
+    dependencies:
+      '@rn-devtools/collector-hermes':
+        specifier: workspace:*
+        version: link:../hermes
+      '@rn-devtools/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@rn-devtools/shared':
+        specifier: workspace:*
+        version: link:../../shared
+    devDependencies:
+      '@types/node':
+        specifier: ^26.1.1
+        version: 26.1.1
+
   packages/collectors/react-devtools:
     dependencies:
       '@rn-devtools/collector-hermes':
@@ -258,6 +280,9 @@ importers:
       '@rn-devtools/collector-metro':
         specifier: workspace:*
         version: link:../collectors/metro
+      '@rn-devtools/collector-network':
+        specifier: workspace:*
+        version: link:../collectors/network
       '@rn-devtools/collector-react-devtools':
         specifier: workspace:*
         version: link:../collectors/react-devtools
