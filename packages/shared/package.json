@@ -18,5 +18,7 @@
     "lint": "eslint src",
     "clean": "rm -rf dist *.tsbuildinfo"
   },
-  "dependencies": {}
+  "dependencies": {
+    "zod": "^4.4.3"
+  }
 }
