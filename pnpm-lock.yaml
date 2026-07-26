@@ -148,6 +148,9 @@ importers:
 
   packages/collectors/react-devtools:
     dependencies:
+      '@rn-devtools/collector-hermes':
+        specifier: workspace:*
+        version: link:../hermes
       '@rn-devtools/core':
         specifier: workspace:*
         version: link:../../core
