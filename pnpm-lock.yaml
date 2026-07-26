@@ -93,6 +93,30 @@ importers:
 
   packages/cli:
     dependencies:
+      '@rn-devtools/analyzer-fps':
+        specifier: workspace:*
+        version: link:../analyzers/fps
+      '@rn-devtools/analyzer-memory':
+        specifier: workspace:*
+        version: link:../analyzers/memory
+      '@rn-devtools/analyzer-render':
+        specifier: workspace:*
+        version: link:../analyzers/render
+      '@rn-devtools/collector-android':
+        specifier: workspace:*
+        version: link:../collectors/android
+      '@rn-devtools/collector-hermes':
+        specifier: workspace:*
+        version: link:../collectors/hermes
+      '@rn-devtools/collector-ios':
+        specifier: workspace:*
+        version: link:../collectors/ios
+      '@rn-devtools/collector-metro':
+        specifier: workspace:*
+        version: link:../collectors/metro
+      '@rn-devtools/collector-react-devtools':
+        specifier: workspace:*
+        version: link:../collectors/react-devtools
       '@rn-devtools/core':
         specifier: workspace:*
         version: link:../core
@@ -105,6 +129,10 @@ importers:
       '@rn-devtools/shared':
         specifier: workspace:*
         version: link:../shared
+    devDependencies:
+      '@types/node':
+        specifier: ^26.1.1
+        version: 26.1.1
 
   packages/collectors/android:
     dependencies:

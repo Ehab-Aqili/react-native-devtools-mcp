@@ -17,6 +17,30 @@
     },
     {
       "path": "../reports"
+    },
+    {
+      "path": "../collectors/metro"
+    },
+    {
+      "path": "../collectors/hermes"
+    },
+    {
+      "path": "../collectors/react-devtools"
+    },
+    {
+      "path": "../collectors/android"
+    },
+    {
+      "path": "../collectors/ios"
+    },
+    {
+      "path": "../analyzers/memory"
+    },
+    {
+      "path": "../analyzers/render"
+    },
+    {
+      "path": "../analyzers/fps"
     }
   ]
 }
