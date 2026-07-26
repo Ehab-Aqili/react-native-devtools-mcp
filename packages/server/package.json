@@ -19,18 +19,23 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
-    "@rn-devtools/shared": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@rn-devtools/analyzer-bundle": "workspace:*",
+    "@rn-devtools/analyzer-fps": "workspace:*",
+    "@rn-devtools/analyzer-memory": "workspace:*",
+    "@rn-devtools/analyzer-network": "workspace:*",
+    "@rn-devtools/analyzer-render": "workspace:*",
+    "@rn-devtools/collector-android": "workspace:*",
+    "@rn-devtools/collector-hermes": "workspace:*",
+    "@rn-devtools/collector-ios": "workspace:*",
+    "@rn-devtools/collector-metro": "workspace:*",
+    "@rn-devtools/collector-react-devtools": "workspace:*",
     "@rn-devtools/core": "workspace:*",
     "@rn-devtools/reports": "workspace:*",
-    "@rn-devtools/collector-metro": "workspace:*",
-    "@rn-devtools/collector-hermes": "workspace:*",
-    "@rn-devtools/collector-react-devtools": "workspace:*",
-    "@rn-devtools/collector-android": "workspace:*",
-    "@rn-devtools/collector-ios": "workspace:*",
-    "@rn-devtools/analyzer-memory": "workspace:*",
-    "@rn-devtools/analyzer-render": "workspace:*",
-    "@rn-devtools/analyzer-fps": "workspace:*",
-    "@rn-devtools/analyzer-network": "workspace:*",
-    "@rn-devtools/analyzer-bundle": "workspace:*"
+    "@rn-devtools/shared": "workspace:*",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1"
   }
 }
