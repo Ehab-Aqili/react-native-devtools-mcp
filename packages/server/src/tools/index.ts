@@ -12,6 +12,7 @@ import { registerCaptureAndroidPerfTool } from "./capture-android-perf.js";
 import { registerCapturePerfettoTraceTool } from "./capture-perfetto-trace.js";
 import { registerRecordIosTraceTool } from "./record-ios-trace.js";
 import { registerAnalyzeProjectTool } from "./analyze-project.js";
+import { registerGenerateReportTool } from "./generate-report.js";
 
 export function registerDomainTools(server: McpServer, ctx: ServerContext): void {
   registerListDevicesTool(server, ctx);
@@ -26,4 +27,5 @@ export function registerDomainTools(server: McpServer, ctx: ServerContext): void
   registerCapturePerfettoTraceTool(server, ctx);
   registerRecordIosTraceTool(server, ctx);
   registerAnalyzeProjectTool(server, ctx);
+  registerGenerateReportTool(server, ctx);
 }
